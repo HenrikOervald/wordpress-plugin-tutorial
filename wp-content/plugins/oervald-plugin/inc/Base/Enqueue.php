@@ -3,15 +3,17 @@
  * @package OervaldPlugin
  */
 namespace Inc\Base;
+use \Inc\Base\BaseController;
 
-class Enqueue{
+class Enqueue extends BaseController
+{
     function register(){
         add_action('wp_enqueue_scripts', array($this, 'enqueue'));
     }
 
     function enqueue()
     {
-        wp_enqueue_style('mypluginstyle', PLUGIN_URL.'/assets/mystyle.css');
-        wp_enqueue_script('mypluginscript', PLUGIN_URL.'/assets/myscript.js');
+        wp_enqueue_style('mypluginstyle', $this->plugin_url.'/assets/mystyle.css');
+        wp_enqueue_script('mypluginscript', $this->plugin_url.'/assets/myscript.js');
     }
 }

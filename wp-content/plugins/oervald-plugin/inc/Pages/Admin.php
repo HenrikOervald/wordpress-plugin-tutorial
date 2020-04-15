@@ -5,22 +5,31 @@
  */
 
 namespace Inc\Pages;
-
-class Admin
+use \Inc\Base\BaseController;
+use \Inc\Api\SettingsApi;
+class Admin extends BaseController
 {
+    public $settings;
+    public $pages = array();
+
+    function __construct()
+    {
+        $this->settings = new SettingsApi();
+        $this->pages = [
+            [
+            'page_title' => 'Oervald Plugin',
+            'menu_title' => 'Oervald',
+            'capability' => 'manage_options',
+            'menu_slug' => 'oervald_plugin',
+            'callback' => function(){ echo '<h1>Oervald Plugin</h1>';},
+            'icon_url' => 'dashicon-store',
+            'position' => 110
+            ]
+        ];
+    }
 
     public function register()
     {
-        add_action('admin_menu', array($this, 'add_admin_pages'));
-    }
-
-    public function add_admin_pages()
-    {
-        add_menu_page('Oervald Plugin', 'Oervald', 'manage_options', 'oervald_plugin', array($this, 'admin_index'), 'dashicons-store', 110);
-    }
-
-    public function admin_index()
-    {
-        require_once PLUGIN_PATH. '/templates/admin.php';
-    }
+        $this->settings->addPages($this->pages)->register();
+    } 
 }
